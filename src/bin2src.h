@@ -7,6 +7,7 @@
 #define DEFAULT_OUT "out.asm"
 #define DEFAULT_KWD "!byte"
 #define DEFAULT_SEP ','
+#define DEFAULT_BPR 16
 
 char *newstr( char *initial_str );
 void print_info();

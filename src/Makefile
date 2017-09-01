@@ -13,7 +13,7 @@ bin2src.o: $(OBJECTS)
 	$(GCC) $(FLAGS) $(DEBUG) -c -o $@ $<
 	@echo $(OBJECTS)
 
-bin2src: bin2array.o
+bin2src: bin2src.o
 	$(GCC) $(FLAGS) $(DEBUG) -o $@ $<
 	$(CP) $@ ../bin/
 

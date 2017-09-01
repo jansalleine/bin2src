@@ -13,6 +13,7 @@ int main( int argc, char *argv[] )
     char    keyword[8]          = DEFAULT_KWD;
 
     int     intendation         = DEFAULT_ITD;
+    int     modulo              = DEFAULT_BPR;
     int     seperator           = DEFAULT_SEP;
 
     // vars - init just to be "super-safe" :-P
@@ -32,6 +33,7 @@ int main( int argc, char *argv[] )
     int     skipbytes           = 0;
     int     countbytes          = 0;
     int     addoffset           = 0;
+    int     output_data         = 0;
 
     print_info();
 
@@ -68,6 +70,13 @@ int main( int argc, char *argv[] )
                 if ( sscanf( optarg, "%i", &countbytes) != 1 )
                 {
                     printf( "\nError: -c needs an integer value for number of bytes\n" );
+                    exit( EXIT_FAILURE );
+                }
+                break;
+            case 'i':
+                if ( sscanf( optarg, "%i", &intendation) != 1 )
+                {
+                    printf( "\nError: -i needs an integer value for string intendation\n" );
                     exit( EXIT_FAILURE );
                 }
                 break;
@@ -155,7 +164,7 @@ int main( int argc, char *argv[] )
     infile_size = ftell( infile );
     last_byte = infile_size - skipbytes - countbytes - 1;
     rewind( infile );
-    if ( countbytes = 0 )
+    if ( countbytes == 0 )
     {
         countbytes = infile_size;
     }
@@ -164,9 +173,10 @@ int main( int argc, char *argv[] )
     fseek( infile, skipbytes, 0 );
 
     // mainloop
+    i = 0;
     while  ( ( ( input_data = fgetc( infile ) ) != EOF ) && ( i < countbytes ) )
     {
-        if ( i = 0 )
+        if ( i == 0 )
         {
             temp_string = malloc( strlen( whitespaces ) +
                                   strlen( keyword ) +
@@ -175,9 +185,9 @@ int main( int argc, char *argv[] )
             fputs( temp_string, outfile );
             free( temp_string );
         }
-        if ( ( i > 0 ) && ( i % 16 = 0 ) )
+        else if ( ( i > 0 ) && ( i % modulo == 0 ) )
         {
-            temp_string = malloc( "\n" +
+            temp_string = malloc( strlen( "\n" ) +
                                   strlen( whitespaces ) +
                                   strlen( keyword ) +
                                   1 );
@@ -187,17 +197,21 @@ int main( int argc, char *argv[] )
         }
         if ( addoffset > 0 )
         {
-            temp_string = malloc( strlen( " $00+$00" ) + 1 );
-            sprintf( temp_string, " $%02x+$%02x", input_data, addoffset );
+            output_data = input_data + addoffset;
+            if ( output_data > 0xFF )
+            {
+                printf( "WARNING: input data + offset exceeds 255 at byte %d.\n", i+1 );
+            }
         }
         else
         {
-            temp_string = malloc( strlen( " $00" ) + 1 );
-            sprintf( temp_string, " $%02x", input_data );
+            output_data = input_data;
         }
+        temp_string = malloc( strlen( " $00" ) + 1 );
+        sprintf( temp_string, " $%02x", output_data );
         fputs( temp_string, outfile );
         free( temp_string );
-        if ( ( i % 16 != 0 ) && ( i != last_byte ) )
+        if ( ( i % modulo != ( modulo - 1 ) ) && ( i != last_byte ) )
         {
             fputc( seperator, outfile );
         }
