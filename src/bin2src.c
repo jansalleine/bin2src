@@ -195,17 +195,11 @@ int main( int argc, char *argv[] )
             fputs( temp_string, outfile );
             free( temp_string );
         }
-        if ( addoffset > 0 )
+        output_data = input_data + addoffset;
+        if ( output_data > 0xFF )
         {
-            output_data = input_data + addoffset;
-            if ( output_data > 0xFF )
-            {
-                printf( "WARNING: input data + offset exceeds 255 at byte %d.\n", i+1 );
-            }
-        }
-        else
-        {
-            output_data = input_data;
+            output_data = output_data - 0x100;
+            printf( "WARNING: input data + offset exceeds 255 at byte %d.\n", i+1 );
         }
         temp_string = malloc( strlen( " $00" ) + 1 );
         sprintf( temp_string, " $%02x", output_data );
