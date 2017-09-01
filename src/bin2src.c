@@ -198,7 +198,7 @@ int main( int argc, char *argv[] )
         output_data = input_data + addoffset;
         if ( output_data > 0xFF )
         {
-            output_data = output_data - 0x100;
+            output_data = output_data & 0xFF;
             printf( "WARNING: input data + offset exceeds 255 at byte %d.\n", i+1 );
         }
         temp_string = malloc( strlen( " $00" ) + 1 );
