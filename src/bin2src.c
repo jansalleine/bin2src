@@ -12,7 +12,7 @@ int main( int argc, char *argv[] )
     char    outfile_name[128]   = DEFAULT_OUT;
     char    keyword[8]          = DEFAULT_KWD;
 
-    int     intendation         = DEFAULT_ITD;
+    int     indentation         = DEFAULT_ITD;
     int     modulo              = DEFAULT_BPR;
     int     seperator           = DEFAULT_SEP;
 
@@ -74,9 +74,9 @@ int main( int argc, char *argv[] )
                 }
                 break;
             case 'i':
-                if ( sscanf( optarg, "%i", &intendation) != 1 )
+                if ( sscanf( optarg, "%i", &indentation) != 1 )
                 {
-                    printf( "\nError: -i needs an integer value for string intendation\n" );
+                    printf( "\nError: -i needs an integer value for string indentation\n" );
                     exit( EXIT_FAILURE );
                 }
                 break;
@@ -132,12 +132,12 @@ int main( int argc, char *argv[] )
     }
 
     // prepare whitespaces string
-    whitespaces = malloc( intendation + 1 );
-    for ( i = 0; i < intendation; i++ )
+    whitespaces = malloc( indentation + 1 );
+    for ( i = 0; i < indentation; i++ )
     {
         whitespaces[i] = ' ';
     }
-    whitespaces[intendation] = '\0';
+    whitespaces[indentation] = '\0';
 
     // open files
     infile_name = newstr( argv[optind] );
@@ -157,7 +157,7 @@ int main( int argc, char *argv[] )
     printf( "add offset:        %d\n", addoffset );
     printf( "output filename:   %s\n", outfile_name );
     printf( "keyword:           %s\n", keyword );
-    printf( "intendation:       %d\n", intendation );
+    printf( "indentation:       %d\n", indentation );
 
     // get infile size and last byte position
     fseek( infile, 0, SEEK_END );
@@ -271,7 +271,7 @@ void print_help()
     printf( "                [default: 0]\n" );
     printf( "   -c count   : number of bytes to be processed (0 ~ all).\n" );
     printf( "                [default: 0]\n" );
-    printf( "   -i spaces  : intendation of exported code (space characters).\n" );
+    printf( "   -i spaces  : indentation of exported code (space characters).\n" );
     printf( "                [default: 4]\n" );
     printf( "   -k keyword : byte keyword for the assembly source. 8 chars max.\n" );
     printf( "                [default: !byte]\n" );
