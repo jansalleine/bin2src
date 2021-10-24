@@ -9,7 +9,7 @@
 #define DEFAULT_SEP ','
 #define DEFAULT_BPR 16
 
-char *newstr( char *initial_str );
+char *newstr(char *initial_str);
 void print_info();
 void print_help();
 

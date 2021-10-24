@@ -1,3 +1,6 @@
 out.asm
 *.bin
 *.prg
+bin/bin2src
+src/bin2src
+src/bin2src.o
